@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { AppBar, Button, Checkbox, Dialog, DialogContent, DialogTitle, Input, Table, TableCell, TableRow, TextField, Toolbar, Typography } from '@material-ui/core';
 import React, { useState, useEffect } from 'react'
+import Confetti from 'react-dom-confetti';
 
 
 const getDaysArray = function(start, end) {
@@ -12,10 +13,8 @@ const getDaysArray = function(start, end) {
 };
 
 const getColorFromTemp = (temp) => {
-  if (temp < 25) {
+  if (temp < 32) {
     return {name: 'Purple', color: '#'}
-  } else if (25 <= temp && temp < 32) {
-    return {name: 'Blue', color: '#'}
   } else if (32 <= temp && temp < 39) {
     return {name: 'Royal Blue', color: '#'}
   } else if (39 <= temp && temp < 46) {
@@ -23,19 +22,33 @@ const getColorFromTemp = (temp) => {
   } else if (46 <= temp && temp < 53) {
     return {name: 'Aqua', color: '#'}
   } else if (53 <= temp && temp < 60) {
-    return {name: 'green', color: '#'}
+    return {name: 'Green', color: '#'}
   } else if (60 <= temp && temp < 67) {
     return {name: 'Light Green', color: '#'}
   } else if (67 <= temp && temp < 74) {
     return {name: 'Yellow', color: '#'}
   } else if (74 <= temp && temp < 81) {
     return {name: 'Gold', color: '#'}
-  } else if (81 <= temp && temp< 88) {
+  } else if (81 <= temp && temp < 88) {
     return {name: 'Orange', color: '#'}
   } else if (88 <= temp) {
     return {name: 'Red', color: '#'}
   }
 }
+
+const config = {
+  angle: 90,
+  spread: 360,
+  startVelocity: 40,
+  elementCount: 70,
+  dragFriction: 0.12,
+  duration: 3000,
+  stagger: 3,
+  width: "10px",
+  height: "10px",
+  perspective: "500px",
+  colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
+};
 
 function App() {
 
@@ -43,9 +56,12 @@ function App() {
 
   if (!localStorage.getItem('dates')) localStorage.setItem('dates', JSON.stringify({}))
   if (!localStorage.getItem('weather')) localStorage.setItem('weather', JSON.stringify({}))
+  if (!localStorage.getItem('dividers')) localStorage.setItem('dividers', JSON.stringify({}))
 
   const [ usedDates, setUsedDates ] = useState(JSON.parse(localStorage.getItem('dates')))
   const [ weatherDates, setWeatherDates ] = useState(JSON.parse(localStorage.getItem('weather')))
+  const [ dividers, setDividers ] = useState(JSON.parse(localStorage.getItem('dividers')))
+
   const [ uploadDialogOpen, setUploadDialogOpen ] = useState(false)
 
   const updateDate = (date, value) => {
@@ -93,7 +109,7 @@ function App() {
       <AppBar position='static'>
         <Toolbar>
           <Typography>
-            🔥🔥🔥🔥TEMPERATUREBLANKETINATOR🔥🔥🔥🔥
+            🔥🔥🔥🔥TEMPERATURE-BLANKET-INATOR🔥🔥🔥🔥
           </Typography>
         </Toolbar>
       </AppBar>
@@ -101,6 +117,7 @@ function App() {
         <Table>
           {getDaysArray(new Date("August 6, 2020 21:00:00"), Date.now()).map(date => (
             <TableRow style={{ opacity: isDone(date) ? 0.5: 1}}>
+              <Confetti active={ isDone(date) } config={ config } />
               <TableCell>
                 <Checkbox onChange={() => updateDate(date, !isDone(date))} checked={isDone(date)} />
               </TableCell>
