@@ -12,7 +12,9 @@ const getDaysArray = function(start, end) {
 };
 
 const getColorFromTemp = (temp) => {
-  if (temp <= 32) {
+  if (temp < 25) {
+    return {name: 'Purple', color: '#'}
+  } else if (32 < temp && temp <= 25) {
     return {name: 'Blue', color: '#'}
   } else if (32 <= temp && temp < 39) {
     return {name: 'Royal Blue', color: '#'}
