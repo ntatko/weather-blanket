@@ -1,13 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
-import { AppBar, Button, Checkbox, Dialog, DialogContent, DialogTitle, Input, Table, TableCell, TableRow, TextField, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Checkbox, Dialog, DialogContent, DialogTitle, Input, Table, TableCell, TableHead, TableRow, TextField, Toolbar, Typography } from '@material-ui/core';
 import React, { useState, useEffect } from 'react'
 import Confetti from 'react-dom-confetti';
 
+const getMonth = (int) => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January'][int]
 
 const getDaysArray = function(start, end) {
+  let sinceLastMonth = 0
   for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-      arr.push(new Date(dt));
+      const thisDate = new Date(dt)
+      arr.push(thisDate);
+      sinceLastMonth++
+
+      if (sinceLastMonth === daysInMonth(thisDate.getMonth(), thisDate.getFullYear())) {
+        arr.push({
+          toDateString: () => `${getMonth(thisDate.getMonth())} - ${getMonth(thisDate.getMonth() + 1)}}`,
+          isDivider: true
+        })
+        sinceLastMonth = 0
+      }
+
   }
   return arr;
 };
@@ -34,6 +46,10 @@ const getColorFromTemp = (temp) => {
   } else if (88 <= temp) {
     return {name: 'Red', color: '#'}
   }
+}
+
+const daysInMonth = (month, year) => { // Use 1 for January, 2 for February, etc.
+  return new Date(year, month, 0).getDate();
 }
 
 const config = {
@@ -65,15 +81,28 @@ function App() {
   const [ uploadDialogOpen, setUploadDialogOpen ] = useState(false)
 
   const updateDate = (date, value) => {
-    const newUsedDates = {
-      ...usedDates,
-      [date.toDateString()]: value
+    if (date.isDivider) {
+      const newUsedDividers = {
+        ...dividers,
+        [date.toDateString()]: value
+      }
+      setDividers(newUsedDividers)
+      localStorage.setItem('dividers', JSON.stringify(newUsedDividers))
+    } else {
+      const newUsedDates = {
+        ...usedDates,
+        [date.toDateString()]: value
+      }
+      setUsedDates(newUsedDates)
+      localStorage.setItem('dates', JSON.stringify(newUsedDates))
     }
-    setUsedDates(newUsedDates)
-    localStorage.setItem('dates', JSON.stringify(newUsedDates))
   }
 
   const isDone = (date) => {
+    if (date.isDivider) {
+      console.log(date.toDateString())
+      return Object.keys(dividers).includes(date.toDateString()) && dividers[date.toDateString()]
+    }
     return Object.keys(usedDates).includes(date.toDateString()) && usedDates[date.toDateString()]
   }
 
@@ -114,23 +143,43 @@ function App() {
         </Toolbar>
       </AppBar>
       <div style={{ padding: 20 }}>
-        <Table>
+        <Table stickyHeader>
+          <TableHead>
+            <TableCell>
+              Completed?
+            </TableCell>
+            <TableCell>
+              Date
+            </TableCell>
+            <TableCell>
+              High Temp
+            </TableCell>
+            <TableCell>
+              Color
+            </TableCell>
+          </TableHead>
           {getDaysArray(new Date("August 6, 2020 21:00:00"), Date.now()).map(date => (
-            <TableRow style={{ opacity: isDone(date) ? 0.5: 1}}>
+            <>
               <Confetti active={ isDone(date) } config={ config } />
-              <TableCell>
-                <Checkbox onChange={() => updateDate(date, !isDone(date))} checked={isDone(date)} />
-              </TableCell>
-              <TableCell>
-                {date.toDateString()}
-              </TableCell>
-              <TableCell>
-                {weatherDates[date.toDateString()] ? <Typography>{weatherDates[date.toDateString()]}</Typography> : <Button onClick={() => setUploadDialogOpen(true)}>Add Missing Data</Button>}
-              </TableCell>
-              <TableCell>
-                { weatherDates[date.toDateString()] ? getColorFromTemp(weatherDates[date.toDateString()]).name : 'Need Temp Data' }
-              </TableCell>
-            </TableRow>
+              <TableRow style={{ opacity: isDone(date) ? 0.5: 1}}>
+                <TableCell>
+                  <Checkbox onChange={() => updateDate(date, !isDone(date))} checked={isDone(date)} />
+                </TableCell>
+                <TableCell>
+                  {date.isDivider ? 'DIVIDER' : date.toDateString()}
+                </TableCell>
+                <TableCell>
+                  { date.isDivider
+                    ? 'DIVIDER'
+                    : weatherDates[date.toDateString()] ? <Typography>{weatherDates[date.toDateString()]}</Typography> : <Button onClick={() => setUploadDialogOpen(true)}>Add Missing Data</Button>}
+                </TableCell>
+                <TableCell>
+                  { date.isDivider
+                    ? 'DIVIDER PURPLE'
+                    : weatherDates[date.toDateString()] ? getColorFromTemp(weatherDates[date.toDateString()]).name : 'Need Temp Data' }
+                </TableCell>
+              </TableRow>
+            </>
           ))}
         </Table>
       </div>
