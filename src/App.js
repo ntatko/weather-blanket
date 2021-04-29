@@ -1,6 +1,6 @@
 import './App.css';
-import { AppBar, Button, Checkbox, Dialog, DialogContent, DialogTitle, Input, Table, TableCell, TableHead, TableRow, TextField, Toolbar, Typography } from '@material-ui/core';
-import React, { useState, useEffect } from 'react'
+import { AppBar, Button, Checkbox, Dialog, DialogContent, DialogTitle, Table, TableCell, TableHead, TableRow, TextField, Toolbar, Typography } from '@material-ui/core';
+import React, { useState } from 'react'
 import Confetti from 'react-dom-confetti';
 
 const getMonth = (int) => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January'][int]
@@ -25,26 +25,28 @@ const getDaysArray = function(start, end) {
 };
 
 const getColorFromTemp = (temp) => {
-  if (temp < 32) {
-    return {name: 'Purple', color: '#'}
+  if (temp < 25) {
+    return {name: 'White', color: '#ffffff2e'}
+  } else if (25 <= temp && temp < 32) {
+    return {name: 'Purple', color: '#8000802e'}
   } else if (32 <= temp && temp < 39) {
-    return {name: 'Royal Blue', color: '#'}
+    return {name: 'Royal Blue', color: '#4169e12e'}
   } else if (39 <= temp && temp < 46) {
-    return {name: '"Lupis" Blue', color: '#'}
+    return {name: '"Lupis" Blue', color: '#26619c2e'}
   } else if (46 <= temp && temp < 53) {
-    return {name: 'Aqua', color: '#'}
+    return {name: 'Aqua', color: '#00FFFF2e'}
   } else if (53 <= temp && temp < 60) {
-    return {name: 'Green', color: '#'}
+    return {name: 'Green', color: '#0064002e'}
   } else if (60 <= temp && temp < 67) {
-    return {name: 'Light Green', color: '#'}
+    return {name: 'Light Green', color: '#00ff002e'}
   } else if (67 <= temp && temp < 74) {
-    return {name: 'Yellow', color: '#'}
+    return {name: 'Yellow', color: '#ffff002e'}
   } else if (74 <= temp && temp < 81) {
-    return {name: 'Gold', color: '#'}
+    return {name: 'Gold', color: '#FFD7002e'}
   } else if (81 <= temp && temp < 88) {
-    return {name: 'Orange', color: '#'}
+    return {name: 'Orange', color: '#ffa5002e'}
   } else if (88 <= temp) {
-    return {name: 'Red', color: '#'}
+    return {name: 'Red', color: '#ff00002e'}
   }
 }
 
@@ -161,7 +163,7 @@ function App() {
           {getDaysArray(new Date("August 6, 2020 21:00:00"), Date.now()).map(date => (
             <>
               <Confetti active={ isDone(date) } config={ config } />
-              <TableRow style={{ opacity: isDone(date) ? 0.5: 1}}>
+              <TableRow style={{ opacity: isDone(date) ? 0.5: 1, backgroundColor: weatherDates[date.toDateString()] ? getColorFromTemp(weatherDates[date.toDateString()]).color : 'white'}}>
                 <TableCell>
                   <Checkbox onChange={() => updateDate(date, !isDone(date))} checked={isDone(date)} />
                 </TableCell>
