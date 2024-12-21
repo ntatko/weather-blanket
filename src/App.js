@@ -25,30 +25,30 @@ const getDaysArray = function(start, end) {
 };
 
 const getColorFromTemp = (temp) => {
-  if (temp < 18) {
+  if (temp < 20) {
     return {name: 'White', color: '#ffffff2e'}
-  } else if (18 <= temp && temp < 25) {
-    return {name: 'Dark Purple', color: '#3019342e'}
-  } else if (25 <= temp && temp < 32) {
-    return {name: 'Purple', color: '#8000802e'}
-  } else if (32 <= temp && temp < 39) {
-    return {name: 'Royal Blue', color: '#4169e12e'}
-  } else if (39 <= temp && temp < 46) {
-    return {name: '"Lupis" Blue', color: '#26619c2e'}
-  } else if (46 <= temp && temp < 53) {
-    return {name: 'Aqua', color: '#00FFFF2e'}
-  } else if (53 <= temp && temp < 60) {
-    return {name: 'Green', color: '#0064002e'}
-  } else if (60 <= temp && temp < 67) {
-    return {name: 'Light Green', color: '#00ff002e'}
-  } else if (67 <= temp && temp < 74) {
-    return {name: 'Yellow', color: '#ffff002e'}
-  } else if (74 <= temp && temp < 81) {
-    return {name: 'Gold', color: '#FFD7002e'}
-  } else if (81 <= temp && temp < 88) {
-    return {name: 'Orange', color: '#ffa5002e'}
+  } else if (20 <= temp && temp < 27) {
+    return {name: 'Light Blue', color: '#a4d2f52e'}
+  } else if (27 <= temp && temp < 34) {
+    return {name: 'Country Blue', color: '#94b5ce2e'}
+  } else if (34 <= temp && temp < 41) {
+    return {name: 'Blue', color: '#2899ef2e'}
+  } else if (41 <= temp && temp < 48) {
+    return {name: 'Soft Navy', color: '#0038932e'}
+  } else if (48 <= temp && temp < 55) {
+    return {name: 'Hunter Green', color: '#0373322e'}
+  } else if (55 <= temp && temp < 62) {
+    return {name: 'Spring Green', color: '#45ec8c2e'}
+  } else if (62 <= temp && temp < 69) {
+    return {name: 'Yellow', color: '#eee6272e'}
+  } else if (69 <= temp && temp < 76) {
+    return {name: 'Gold', color: '#d0c7002e'}
+  } else if (76 <= temp && temp < 83) {
+    return {name: 'Carrot', color: '#eca8182e'}
+  } else if (83 <= temp && temp < 90) {
+    return {name: 'Burgundy', color: '#b50a0a2e'}
   } else if (88 <= temp) {
-    return {name: 'Red', color: '#ff00002e'}
+    return {name: 'Cherry', color: '#ff00002e'}
   }
 }
 
