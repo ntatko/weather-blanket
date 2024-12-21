@@ -113,12 +113,11 @@ function App() {
   const handleWeatherAdd = (event) => {
     const text = event.target.value
 
-    console.log("text", text)
     const monthString = text.split(' ')[0]
     const weatherData = text.split('Max\tAvg\tMin')[0].split(' ').splice(1).map(e => e.trim()).filter(e => e).reduce((acc, e, i) => {
-      let year = 2021
+      let year = 2024
       if (Date.now() - new Date(`${e} ${monthString} ${year}`) < 0) {
-        year = 2020
+        year = 2023
       }
 
       const date = new Date(`${e} ${monthString} ${year}`)
@@ -162,7 +161,7 @@ function App() {
               Color
             </TableCell>
           </TableHead>
-          {getDaysArray(new Date("August 6, 2020 21:00:00"), Date.now()).map(date => (
+          {getDaysArray(new Date("July 20, 2023 21:00:00"), Date.now()).map(date => (
             <>
               <Confetti active={ isDone(date) } config={ config } />
               <TableRow style={{ opacity: isDone(date) ? 0.5: 1, backgroundColor: weatherDates[date.toDateString()] ? getColorFromTemp(weatherDates[date.toDateString()]).color : 'white'}}>
@@ -179,7 +178,7 @@ function App() {
                 </TableCell>
                 <TableCell>
                   { date.isDivider
-                    ? 'DIVIDER PURPLE'
+                    ? 'DIVIDER BROWN'
                     : weatherDates[date.toDateString()] ? getColorFromTemp(weatherDates[date.toDateString()]).name : 'Need Temp Data' }
                 </TableCell>
               </TableRow>
